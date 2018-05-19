@@ -75,7 +75,7 @@ var model = {
     }
   },
   generateShip: function() {
-    var direction = Math.floor(Math.random() * 2);
+    var direction = Math.floor(Math.random() * 2);// floor()用来取整  manth.random返回0到1之间的随机数
     var row, col;
  
     if (direction ===1) {
@@ -89,54 +89,54 @@ var model = {
     var newShipLocations = [];
     for (var i = 0 ; i<this.shipLength; i++) {
       if (direction === 1){
-        newShipLocations.push(row + ""+(col+i));
+        newShipLocations.push(row + ""+(col+i));//用于生成水平的战舰
       }else {
-        newShipLocations.push((row + i)+""+col);
+        newShipLocations.push((row + i)+""+col);//用于生成竖直的战舰
       }
     }
-    return newShipLocations;
+    return newShipLocations;//返回给这个数组
   },
-  collision: function(locations) {
-    for (var i =0; i<this.numShips; i++){
+  collision: function(locations) {//用于判断战舰是否发生碰撞
+    for (var i =0; i<this.numShips; i++){//i为战舰的数量
       var ship = model.ships[i];
       for (var j=0; j< locations.length; j++) {
         if (ship.locations.indexOf(locations[j]) >=0) {
-          return true;
+          return true;//返回>=0及发生了碰撞
         }
       }
     }
-    return false;
+    return false;//没有发生碰撞
   }  
 };
 function parseGuess(guess){
   var alphabet = ["A","B","C","D","E","F","G"];
   if (guess === null || guess.length !== 2){
-    alert("Oops,please enter a letter and a number on the board.");
+    alert("Oops,please enter a letter and a number on the board.");//提醒玩家要输入数值 A10则这样提醒
   }else{
-    firstChar = guess.charAt(0);
-    var row = alphabet.indexOf(firstChar);
-    var column = guess.charAt(1);
+    firstChar = guess.charAt(0);//第一个字符
+    var row = alphabet.indexOf(firstChar);//获取0到6的数字即为A B C
+    var column = guess.charAt(1);//第二个字符 
  
-    if (isNaN(row) || isNaN(column)) {
+    if (isNaN(row) || isNaN(column)) { //isNaN() 函数用于检查其参数是否是非数字值
       alert("Oops, that isn't on the board.");
     }else if (row<0 || row>= model.boardSize || column <0 ||column>=model.boardSize){
-      alert ("Oops, that's off the board!");
+      alert ("Oops, that's off the board!");//如A8
     }else{
-      return row+column;
+      return row+column;//都有效就返回 如A0
     }
   }
-  return null;
+  return null; //如A7
 }
 //console.log(parseGuess("A0"));
 //console.log(parseGuess("G3"));
 var controller = {
   guesses: 0,
-  processGuess: function(guess) {
+  processGuess: function(guess) {//判断玩家用了多少次结束了游戏
     var location = parseGuess(guess);
     if (location) {
-      this.guesses++;
+      this.guesses++;//次数+1
       var hit = model.fire(location);
-      if (hit && model.shipsSunk === model.numShips) {
+      if (hit && model.shipsSunk === model.numShips) {//如果击沉了3个战舰就返回下面的东西
         view.displayMessage("You sank all my battleships, in "+this.guesses+"guesses");
       }
       //返回值不是null即为有效
@@ -145,26 +145,27 @@ var controller = {
 };
 //controller.processGuess("A0");
 function init() {
-  var fireButton = document.getElementById("fireButton");
-  fireButton.onclick = handleFireButton;
+  var fireButton = document.getElementById("fireButton");//获取html中的id
+  fireButton.onclick = handleFireButton;//增加单机事件处理程序 让它获得handleFireButton的功能
   var guessInput = document.getElementById("guessInput");
-  guessInput.onkeypress = handleKeyPress;
+  guessInput.onkeypress = handleKeyPress;//按键事件
  
   model.generateShipLocations();
 }
+
 function handleFireButton() {
   var guessInput = document.getElementById("guessInput");
-  var guess = guessInput.value;
-  controller.processGuess(guess);
+  var guess = guessInput.value;//将猜测存储在value中
+  controller.processGuess(guess);//猜测如A0
  
-  guessInput.value = "";
+  guessInput.value = "";//删除前面的猜测
 }
  
-function handleKeyPress(e) {
-  var fireButton = document.getElementById("firebutton");
+function handleKeyPress(e) {//按下回车=单机fire
+  var fireButton = document.getElementById("fireButton");
   if (e.keyCode === 13) {
-    fireButton.click();
-    return false;
+       fireButton.click();
+       return false;
   }
 }
  
