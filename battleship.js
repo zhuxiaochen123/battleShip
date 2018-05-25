@@ -47,6 +47,8 @@ var model = {
           if (this.isSunk(ship)) {//判断战舰是否被击中
             view.displayMessage("You sank my battleship!");
             this.shipsSunk++;
+            var qwer = this.numShips-this.shipsSunk;
+            document.getElementById("numships").innerHTML=("还剩的战舰数:"+qwer);
           }
           return true;
            
@@ -135,6 +137,7 @@ var controller = {
     var location = parseGuess(guess);
     if (location) {
       this.guesses++;//次数+1
+      document.getElementById("guess").innerHTML="猜测次数:"+this.guesses;
       var hit = model.fire(location);
       if (hit && model.shipsSunk === model.numShips) {//如果击沉了3个战舰就返回下面的东西
         view.displayMessage("You sank all my battleships, in "+this.guesses+"guesses");
@@ -168,6 +171,7 @@ function handleKeyPress(e) {//按下回车=单机fire
        return false;
   }
 }
+
  
 window.onload = init;
 

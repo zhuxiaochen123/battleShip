@@ -50,10 +50,20 @@
     .miss{
       background: url("miss.png") no-repeat center center;
     }
+    #kuang{
+    position: fixed;
+    background-color: grey;
+    color: ghostwhite;
+    top: 100px;
+    }
   </style>
 </head>
 
 <body>
+  <div id="kuang">
+    <p id="guess">猜测次数:0</p>
+    <p id="numships">还剩的战舰数: 3</p>
+  </div>
   <div id="board">
     <div id="messageArea"></div>
     <table>
